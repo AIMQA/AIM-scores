@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DKA Decision Support · Clinical Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:#F7F4EE; --paper-deep:#EFEAE0; --cream:#FBF8F2; --white:#FFFFFF;
+  --ink:#0B1F33; --ink-soft:#294159; --ink-mute:#5A6E80;
+  --rule:#D9D2C3; --rule-soft:#E5E0D2;
+  --accent:#C84A1E; --accent-soft:#FAE6DC; --accent-deep:#9F3914;
+  --red:#A8201A; --red-soft:#F6E3E1;
+  --amber:#9A6A00; --amber-soft:#FAEFD1;
+  --green:#155D3A; --green-soft:#DEEEDF;
+  --info:#0A4A6E; --info-soft:#DCEAF2;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter Tight',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* Masthead */
+.masthead{border-bottom:1px solid var(--rule);background:var(--white);position:sticky;top:0;z-index:50}
+.masthead-inner{max-width:1180px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;gap:16px}
+.back-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink-soft);font-size:13px;padding:6px 10px;border-radius:4px;font-weight:500;transition:all .2s}
+.back-link:hover{background:var(--paper-deep);color:var(--ink)}
+.brand-mark{width:42px;height:42px;background:var(--accent);color:var(--white);border-radius:6px;display:grid;place-items:center;font-family:var(--serif);font-weight:600;font-size:18px;font-style:italic}
+.brand-text{display:flex;flex-direction:column;line-height:1.1;gap:2px}
+.brand-text .eyebrow{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
+.brand-text .title{font-family:var(--serif);font-weight:500;font-size:17px;color:var(--ink)}
+.masthead-meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-mute)}
+
+/* Layout */
+.shell{max-width:1180px;margin:0 auto;padding:40px 32px 60px;display:grid;grid-template-columns:1fr 300px;gap:40px}
+
+.tool-head{margin-bottom:32px}
+.tool-head .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;font-weight:500;margin-bottom:10px;display:block}
+.tool-head h1{font-family:var(--serif);font-weight:400;font-size:48px;line-height:1.05;letter-spacing:-.02em;color:var(--ink);margin-bottom:14px}
+.tool-head h1 em{font-style:italic;color:var(--accent)}
+.tool-head p{font-size:15px;color:var(--ink-soft);max-width:640px}
+
+/* Progress dots */
+.progress{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.dot{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-mute);padding:4px 10px;border-radius:20px;background:var(--cream);border:1px solid var(--rule-soft);transition:all .2s}
+.dot .n{font-family:var(--mono);font-size:10px;color:var(--ink-mute)}
+.dot.active{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.dot.active .n{color:var(--white)}
+.dot.done{background:var(--accent-soft);color:var(--accent-deep);border-color:var(--accent-soft)}
+.dot.done .n{color:var(--accent-deep)}
+
+/* Card */
+.card{background:var(--white);border:1px solid var(--rule);border-radius:6px;padding:32px;margin-bottom:24px;position:relative}
+.card-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:10px;display:block}
+.card h2{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:8px}
+.card h2 em{font-style:italic;color:var(--accent)}
+.card .sub{color:var(--ink-soft);font-size:14.5px;margin-bottom:20px}
+
+/* Question */
+.q-text{font-size:16px;color:var(--ink);font-weight:500;margin:16px 0 12px}
+.opt-grid{display:grid;gap:10px;margin-top:14px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;background:var(--cream);border:1px solid var(--rule);border-radius:5px;cursor:pointer;font-family:var(--sans);font-size:14.5px;color:var(--ink);text-align:left;width:100%;transition:all .2s;font-weight:500}
+.opt:hover{background:var(--accent-soft);border-color:var(--accent);transform:translateX(2px)}
+.opt .arrow{color:var(--ink-mute);font-size:14px;transition:transform .2s}
+.opt:hover .arrow{color:var(--accent);transform:translateX(3px)}
+.opt .sub{font-size:12.5px;color:var(--ink-mute);font-weight:400;margin-top:3px;display:block}
+.opt .label-wrap{display:flex;flex-direction:column}
+
+/* Input */
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;color:var(--ink-mute);font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;font-weight:500}
+.field input{font-family:var(--sans);font-size:15px;padding:10px 12px;border:1px solid var(--rule);background:var(--cream);border-radius:4px;color:var(--ink)}
+.field input:focus{outline:2px solid var(--accent);outline-offset:1px}
+
+/* Buttons */
+.btn-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.btn{font-family:var(--sans);font-size:14px;font-weight:600;padding:11px 22px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:4px;cursor:pointer;transition:all .15s}
+.btn:hover{background:var(--accent);border-color:var(--accent)}
+.btn.secondary{background:transparent;color:var(--ink-soft);border-color:var(--rule)}
+.btn.secondary:hover{background:var(--paper-deep);color:var(--ink);border-color:var(--ink-soft)}
+
+/* Outcome callouts */
+.callout{display:flex;gap:14px;padding:18px;border-radius:5px;margin:16px 0;align-items:flex-start;border-left:4px solid}
+.callout .ico{flex-shrink:0;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--white)}
+.callout .body{flex:1}
+.callout .heading{font-weight:600;font-size:15px;margin-bottom:6px;color:var(--ink)}
+.callout .text{font-size:14px;color:var(--ink-soft);line-height:1.5}
+.callout.urgent{background:var(--red-soft);border-color:var(--red)}
+.callout.urgent .ico{background:var(--red)}
+.callout.warn{background:var(--amber-soft);border-color:var(--amber)}
+.callout.warn .ico{background:var(--amber)}
+.callout.good{background:var(--green-soft);border-color:var(--green)}
+.callout.good .ico{background:var(--green)}
+.callout.info{background:var(--info-soft);border-color:var(--info)}
+.callout.info .ico{background:var(--info)}
+
+/* Action block */
+.action-block{background:var(--cream);border:1px solid var(--rule);border-radius:5px;padding:18px 20px;margin:14px 0}
+.action-block h4{font-family:var(--serif);font-style:italic;font-weight:500;font-size:17px;color:var(--accent-deep);margin-bottom:10px}
+.action-block ul{padding-left:18px;font-size:14px;color:var(--ink-soft);line-height:1.7}
+.action-block ul li{margin-bottom:4px}
+.action-block strong{color:var(--ink)}
+
+/* Phase grid */
+.phase-grid{display:grid;gap:14px;margin-top:14px}
+.phase{background:var(--white);border:1px solid var(--rule);border-radius:5px;padding:16px 18px;border-left:3px solid var(--accent)}
+.phase .ph-time{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:8px}
+.phase h5{font-family:var(--serif);font-size:16px;font-weight:500;color:var(--ink);margin-bottom:8px}
+.phase ul{padding-left:16px;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+.phase ul li{margin-bottom:3px}
+
+/* Aside */
+.aside{position:sticky;top:90px;align-self:start}
+.aside-panel{background:var(--white);border:1px solid var(--rule);border-radius:6px;padding:20px 22px;margin-bottom:16px}
+.aside-panel h3{font-family:var(--serif);font-weight:500;font-size:15px;color:var(--ink);margin-bottom:12px;display:flex;justify-content:space-between;align-items:baseline}
+.aside-panel h3 .meta{font-family:var(--mono);font-size:10px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:.1em;font-weight:400}
+.summary-list{display:flex;flex-direction:column;gap:6px}
+.summary-list div{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px dashed var(--rule-soft)}
+.summary-list div:last-child{border-bottom:none}
+.summary-list .k{color:var(--ink-mute)}
+.summary-list .v{color:var(--ink);font-weight:500;font-family:var(--mono);font-size:12px}
+
+details.ref{border:1px solid var(--rule);background:var(--white);border-radius:5px;margin-bottom:8px}
+details.ref summary{padding:11px 14px;cursor:pointer;font-size:13.5px;color:var(--ink-soft);font-weight:500;display:flex;justify-content:space-between;align-items:center;list-style:none}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:'+';color:var(--ink-mute);font-size:18px}
+details.ref[open] summary::after{content:'−'}
+details.ref .body{padding:0 14px 12px;font-size:13px;color:var(--ink-soft);line-height:1.55}
+details.ref .body ul{padding-left:16px;margin-top:6px}
+details.ref .body li{margin-bottom:3px}
+
+/* Trail */
+.trail{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:18px;font-size:12px}
+.trail-item{padding:3px 8px;background:var(--paper-deep);color:var(--ink-soft);border-radius:3px}
+.trail-sep{color:var(--ink-mute)}
+.trail-current{padding:3px 8px;background:var(--accent);color:var(--white);border-radius:3px;font-weight:500}
+.trail-empty{color:var(--ink-mute);font-style:italic}
+
+footer{border-top:1px solid var(--rule);background:var(--white);margin-top:40px}
+.footer-inner{max-width:1180px;margin:0 auto;padding:24px 32px;font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+.footer-inner strong{color:var(--ink-soft)}
+
+@media (max-width:880px){
+  .shell{grid-template-columns:1fr;padding:24px 20px 40px;gap:24px}
+  .aside{position:static;order:2}
+  .tool-head h1{font-size:36px}
+  .masthead-meta{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="back-link" href="index.html">← Hub</a>
+    <div class="brand-mark">D</div>
+    <div class="brand-text">
+      <span class="eyebrow">Pathway 01</span>
+      <span class="title">Diabetic ketoacidosis</span>
+    </div>
+    <div class="masthead-meta">JBDS-IP · Adult</div>
+  </div>
+</header>
+
+<main class="shell">
+  <section>
+    <header class="tool-head">
+      <span class="eyebrow">Decision Support</span>
+      <h1>Adult <em>DKA</em> management</h1>
+      <p>Step-by-step diagnosis and management of classic DKA, euglycaemic DKA, and DKA with end-stage renal disease — adapted from JBDS-IP guidance and the ADA/EASD 2024 consensus.</p>
+    </header>
+
+    <div class="progress" id="progress">
+      <span class="dot" data-step="1"><span class="n">01</span>Patient</span>
+      <span class="dot" data-step="2"><span class="n">02</span>Diagnosis</span>
+      <span class="dot" data-step="3"><span class="n">03</span>Phenotype</span>
+      <span class="dot" data-step="4"><span class="n">04</span>Severity</span>
+      <span class="dot" data-step="5"><span class="n">05</span>Management</span>
+    </div>
+
+    <div class="trail" id="trail"><span class="trail-empty">No decisions yet — pathway not started</span></div>
+
+    <div id="node"></div>
+
+    <div class="btn-row">
+      <button class="btn secondary" onclick="goBack()">← Back</button>
+      <button class="btn secondary" onclick="restart()">↻ Restart</button>
+      <button class="btn secondary" onclick="window.print()">⎙ Print</button>
+    </div>
+  </section>
+
+  <aside class="aside">
+    <div class="aside-panel">
+      <h3>Patient <span class="meta">Live</span></h3>
+      <div class="summary-list" id="summary">
+        <div><span class="k">Age</span><span class="v" id="s-age">—</span></div>
+        <div><span class="k">Weight</span><span class="v" id="s-wt">—</span></div>
+        <div><span class="k">Phenotype</span><span class="v" id="s-phen">—</span></div>
+        <div><span class="k">Severity</span><span class="v" id="s-sev">—</span></div>
+      </div>
+    </div>
+
+    <div class="aside-panel">
+      <h3>Quick reference</h3>
+      <details class="ref">
+        <summary>Diagnostic triad</summary>
+        <div class="body">
+          <ul>
+            <li><strong>D</strong> — Glucose ≥ 11 mmol/L (or known diabetes)</li>
+            <li><strong>K</strong> — Ketones ≥ 3 mmol/L (or urine ≥ 2+)</li>
+            <li><strong>A</strong> — pH &lt; 7.3 or HCO₃ &lt; 18 mmol/L</li>
+          </ul>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>FRII rates</summary>
+        <div class="body">
+          <ul>
+            <li>Standard: 0.1 units/kg/hr</li>
+            <li>With 10% glucose (glu ≤ 14): 0.05 units/kg/hr</li>
+            <li>Continue long-acting basal throughout</li>
+          </ul>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>ITU triggers</summary>
+        <div class="body">
+          <ul>
+            <li>pH &lt; 7.0 or HCO₃ &lt; 5 mmol/L</li>
+            <li>K⁺ &lt; 3.5 mmol/L on presentation</li>
+            <li>GCS &lt; 12 or AVPU &lt; A</li>
+            <li>SpO₂ &lt; 92% or SBP &lt; 90 mmHg</li>
+            <li>Age &lt; 25 or &gt; 70 years</li>
+          </ul>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>Resolution criteria</summary>
+        <div class="body">
+          <ul>
+            <li>Ketones &lt; 0.6 mmol/L</li>
+            <li>pH &gt; 7.3 or venous HCO₃ &gt; 18 mmol/L</li>
+            <li>Patient eating and drinking</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <strong>Disclaimer.</strong> Clinical decision support only — does not replace clinical judgement. Adapted from Joint British Diabetes Societies (JBDS-IP) guidance on the management of DKA in adults, with reference to the ADA/EASD 2024 consensus on hyperglycaemic crises. Local trust policy and senior input should guide every decision.
+  </div>
+</footer>
+
+<script>
+const state = { age:null, weight:null, phen:null, sev:null };
+let history_arr = [];
+let currentId = 'patient';
+
+function setStep(n){
+  document.querySelectorAll('#progress .dot').forEach(d=>{
+    const s=parseInt(d.dataset.step,10);
+    d.classList.remove('active','done');
+    if(s<n)d.classList.add('done');
+    if(s===n)d.classList.add('active');
+  });
+}
+
+function setTrail(){
+  const t=document.getElementById('trail');
+  if(history_arr.length===0){t.innerHTML='<span class="trail-empty">No decisions yet — pathway not started</span>';return;}
+  let h='';
+  history_arr.forEach((it,i)=>{
+    h+=`<span class="trail-item">${it.label}</span>`;
+    if(i<history_arr.length-1)h+='<span class="trail-sep">›</span>';
+  });
+  document.getElementById('trail').innerHTML=h;
+}
+
+function updateSummary(){
+  document.getElementById('s-age').textContent = state.age ? state.age+' yr' : '—';
+  document.getElementById('s-wt').textContent = state.weight ? state.weight+' kg' : '—';
+  document.getElementById('s-phen').textContent = state.phen || '—';
+  document.getElementById('s-sev').textContent = state.sev || '—';
+}
+
+const nodes = {
+  patient: () => `
+    <div class="card">
+      <span class="card-tag">Step 01 · Patient</span>
+      <h2>Patient <em>details</em></h2>
+      <p class="sub">Enter age and weight — used for FRII calculations and severity thresholds.</p>
+      <div class="input-row">
+        <div class="field">
+          <label>Age (years)</label>
+          <input type="number" id="in-age" min="16" max="120" placeholder="e.g. 42">
+        </div>
+        <div class="field">
+          <label>Weight (kg)</label>
+          <input type="number" id="in-wt" min="30" max="200" placeholder="e.g. 70">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="submitPatient()">Continue →</button>
+      </div>
+    </div>`,
+
+  diagnosis: () => `
+    <div class="card">
+      <span class="card-tag">Step 02 · Diagnosis</span>
+      <h2>Does the patient meet <em>DKA criteria?</em></h2>
+      <p class="sub">All three components of the diagnostic triad must be present.</p>
+      <div class="action-block">
+        <h4>Diagnostic triad — all three required</h4>
+        <ul>
+          <li><strong>D</strong> · Capillary or venous glucose <strong>≥ 11 mmol/L</strong> (or known diabetes — see euglycaemic pathway)</li>
+          <li><strong>K</strong> · Blood ketones <strong>≥ 3 mmol/L</strong> OR urine ketones <strong>≥ 2+</strong></li>
+          <li><strong>A</strong> · Venous pH <strong>&lt; 7.3</strong> OR bicarbonate <strong>&lt; 18 mmol/L</strong></li>
+        </ul>
+      </div>
+      <p class="q-text">Are all three diagnostic criteria met?</p>
+      <div class="opt-grid">
+        <button class="opt" onclick="pick('phenotype','Diagnosis confirmed')">
+          <span class="label-wrap"><span>Yes — diagnosis confirmed</span><span class="sub">Proceed to determine phenotype</span></span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="opt" onclick="pick('not-dka','Not DKA')">
+          <span class="label-wrap"><span>No — not DKA</span><span class="sub">Consider alternative diagnosis</span></span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>`,
+
+  'not-dka': () => `
+    <div class="card">
+      <span class="card-tag">Outcome</span>
+      <h2>Not <em>DKA</em></h2>
+      <p class="sub">If the diagnostic triad is incomplete, DKA is unlikely.</p>
+      <div class="callout info">
+        <div class="ico">i</div>
+        <div class="body">
+          <div class="heading">Consider alternative diagnoses</div>
+          <div class="text">Hyperosmolar hyperglycaemic state (HHS), starvation ketosis, alcoholic ketoacidosis, sepsis with hyperglycaemia, or simple hyperglycaemia without ketosis.</div>
+        </div>
+      </div>
+      <div class="action-block">
+        <h4>Next steps</h4>
+        <ul>
+          <li>Recheck glucose, ketones and venous gas at 1 hr if borderline</li>
+          <li>Investigate cause of hyperglycaemia / acidosis</li>
+          <li>If suspicious of HHS — see separate HHS pathway</li>
+        </ul>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="restart()">↻ Restart</button>
+      </div>
+    </div>`,
+
+  phenotype: () => `
+    <div class="card">
+      <span class="card-tag">Step 03 · Phenotype</span>
+      <h2>Which <em>phenotype?</em></h2>
+      <p class="sub">Classification determines fluid and glucose targets.</p>
+      <div class="opt-grid">
+        <button class="opt" onclick="pickPhen('Classic','severity')">
+          <span class="label-wrap"><span>Classic DKA</span><span class="sub">Glucose ≥ 11 mmol/L · standard pathway</span></span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="opt" onclick="pickPhen('Euglycaemic','severity')">
+          <span class="label-wrap"><span>Euglycaemic DKA</span><span class="sub">Glucose &lt; 11 mmol/L · SGLT-2, pregnancy, starvation</span></span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="opt" onclick="pickPhen('DKA + ESRD','severity')">
+          <span class="label-wrap"><span>DKA with ESRD</span><span class="sub">eGFR &lt; 10 or established dialysis</span></span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>`,
+
+  severity: () => `
+    <div class="card">
+      <span class="card-tag">Step 04 · Severity</span>
+      <h2>Assess <em>severity</em></h2>
+      <p class="sub">Any single trigger below indicates severe DKA requiring ITU/HDU input.</p>
+      <div class="action-block">
+        <h4>ITU triggers — any one is sufficient</h4>
+        <ul>
+          <li>pH &lt; 7.0 or bicarbonate &lt; 5 mmol/L</li>
+          <li>Blood ketones &gt; 6 mmol/L</li>
+          <li>K⁺ &lt; 3.5 mmol/L on admission</li>
+          <li>GCS &lt; 12 or abnormal AVPU</li>
+          <li>SpO₂ &lt; 92% on air (no chronic lung disease)</li>
+          <li>SBP &lt; 90 mmHg or HR &gt; 100 or &lt; 60 bpm</li>
+          <li>Anion gap &gt; 16 mmol/L</li>
+          <li>Age &lt; 25 or &gt; 70 years</li>
+        </ul>
+      </div>
+      <p class="q-text">Are any severity triggers present?</p>
+      <div class="opt-grid">
+        <button class="opt" onclick="pickSev('Severe','management')">
+          <span class="label-wrap"><span>Yes — severe DKA</span><span class="sub">Escalate to ITU/HDU; senior + critical care input</span></span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="opt" onclick="pickSev('Moderate','management')">
+          <span class="label-wrap"><span>No — moderate / uncomplicated</span><span class="sub">Ward-level management with senior review</span></span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>`,
+
+  management: () => renderManagement(),
+};
+
+function renderManagement(){
+  const isESRD = state.phen === 'DKA + ESRD';
+  const isEugly = state.phen === 'Euglycaemic';
+  const severe = state.sev === 'Severe';
+  const wt = Math.min(state.weight || 70, 110);
+  const frii = (wt * 0.1).toFixed(1);
+  const friiHalf = (wt * 0.05).toFixed(1);
+
+  let phaseHtml = '';
+  if(isESRD){
+    phaseHtml = `
+      <div class="phase">
+        <div class="ph-time">Fluid — ESRD pathway</div>
+        <h5>Restricted fluid, dialysis input</h5>
+        <ul>
+          <li>If anuric and not in shock: <strong>do not give large-volume crystalloid</strong></li>
+          <li>500 mL 0.9% NaCl over 1 hr only if SBP &lt; 90 mmHg</li>
+          <li>Urgent renal/dialysis team referral</li>
+          <li>Monitor K⁺ closely — risk of hyperkalaemia</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="ph-time">Insulin — FRII</div>
+        <h5>FRII at 0.05 units/kg/hr (half rate)</h5>
+        <ul>
+          <li>Start at <strong>${friiHalf} units/hr</strong> (${wt} kg × 0.05)</li>
+          <li>Continue long-acting basal insulin</li>
+          <li>Add 10% glucose 125 mL/hr when glucose ≤ 14 mmol/L</li>
+        </ul>
+      </div>`;
+  } else {
+    phaseHtml = `
+      <div class="phase">
+        <div class="ph-time">0 – 60 min</div>
+        <h5>Resuscitation</h5>
+        <ul>
+          <li>500 mL 0.9% NaCl over 15 min if SBP &lt; 90 mmHg (repeat until SBP &gt; 90)</li>
+          <li>Otherwise 1 L 0.9% NaCl over 1 hr</li>
+          <li>Start FRII at 0.1 units/kg/hr → <strong>${frii} units/hr</strong> (${wt} kg)</li>
+          <li>Continue long-acting basal insulin</li>
+          <li>Senior review within 1 hr</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="ph-time">1 – 6 hr</div>
+        <h5>Replacement</h5>
+        <ul>
+          <li>1 L 0.9% NaCl + K⁺ replacement over 2 hr (×1)</li>
+          <li>1 L 0.9% NaCl + K⁺ over 2 hr (×1)</li>
+          <li>1 L 0.9% NaCl + K⁺ over 4 hr (×1)</li>
+          <li>${isEugly ? 'Start 10% glucose 125 mL/hr from the outset' : 'If glucose ≤ 14 mmol/L: add 10% glucose 125 mL/hr + halve FRII to ' + friiHalf + ' units/hr'}</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="ph-time">6 – 12 hr</div>
+        <h5>Maintenance</h5>
+        <ul>
+          <li>1 L 0.9% NaCl + K⁺ over 4 hr</li>
+          <li>1 L 0.9% NaCl + K⁺ over 6 hr</li>
+          <li>VBG, ketones, glucose, U+E at 6 hr</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="ph-time">12 – 24 hr</div>
+        <h5>Recovery</h5>
+        <ul>
+          <li>Reassess fluid balance and electrolytes</li>
+          <li>Aim for ketone fall ≥ 0.5 mmol/L/hr or HCO₃ rise ≥ 3 mmol/L/hr</li>
+          <li>Senior review at 12 hr</li>
+          <li>Transition to subcutaneous insulin once <strong>eating, drinking and ketones &lt; 0.6</strong></li>
+        </ul>
+      </div>`;
+  }
+
+  return `
+    <div class="card">
+      <span class="card-tag">Step 05 · Management</span>
+      <h2>${state.phen} DKA — <em>${state.sev?.toLowerCase()}</em></h2>
+      <p class="sub">Phased management for a ${wt} kg adult. Times measured from diagnosis (T₀).</p>
+
+      ${severe ? `
+        <div class="callout urgent">
+          <div class="ico">!</div>
+          <div class="body">
+            <div class="heading">Severe DKA — escalate now</div>
+            <div class="text">Inform ITU/HDU team. SBAR referral. Continuous cardiac monitoring. Senior medical input within 30 minutes.</div>
+          </div>
+        </div>` : ''}
+
+      ${isEugly ? `
+        <div class="callout info">
+          <div class="ico">i</div>
+          <div class="body">
+            <div class="heading">Euglycaemic considerations</div>
+            <div class="text">Glucose is &lt; 11 mmol/L despite ketoacidosis. Start 10% glucose alongside FRII <strong>from the outset</strong>. If SGLT-2 inhibitor implicated — withhold and notify diabetes team.</div>
+          </div>
+        </div>` : ''}
+
+      ${isESRD ? `
+        <div class="callout warn">
+          <div class="ico">⚠</div>
+          <div class="body">
+            <div class="heading">ESRD — restricted fluid pathway</div>
+            <div class="text">Standard DKA fluid volumes are dangerous. Anuric patients risk pulmonary oedema. Discuss with renal team within 30 min. Halve FRII rate.</div>
+          </div>
+        </div>` : ''}
+
+      <div class="phase-grid">${phaseHtml}</div>
+
+      <div class="action-block">
+        <h4>Monitoring (all pathways)</h4>
+        <ul>
+          <li>Hourly: blood glucose, capillary ketones, VBG (until pH &gt; 7.3)</li>
+          <li>2-hourly: U+E and K⁺ (more frequent if K⁺ derangement)</li>
+          <li>Fluid balance: hourly input/output, urinary catheter if AKI</li>
+          <li>Continuous cardiac monitoring if K⁺ &lt; 3.5 or &gt; 6.0</li>
+        </ul>
+      </div>
+
+      <div class="callout good">
+        <div class="ico">✓</div>
+        <div class="body">
+          <div class="heading">Resolution criteria</div>
+          <div class="text">Ketones &lt; 0.6 mmol/L · pH &gt; 7.3 (or HCO₃ &gt; 18) · patient eating &amp; drinking. Transition to subcutaneous insulin with overlap.</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" onclick="restart()">↻ New patient</button>
+      </div>
+    </div>`;
+}
+
+function render(id){
+  currentId = id;
+  document.getElementById('node').innerHTML = nodes[id] ? nodes[id]() : '<div class="card"><p>Node not found.</p></div>';
+
+  const stepMap = { patient:1, diagnosis:2, 'not-dka':2, phenotype:3, severity:4, management:5 };
+  setStep(stepMap[id] || 1);
+  setTrail();
+  updateSummary();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function submitPatient(){
+  const a = parseInt(document.getElementById('in-age').value);
+  const w = parseFloat(document.getElementById('in-wt').value);
+  if(!a || !w || a < 16 || w < 30){
+    alert('Please enter valid age (≥16) and weight (≥30 kg).');
+    return;
+  }
+  state.age = a; state.weight = w;
+  history_arr.push({ id:'patient', label:`${a} yr · ${w} kg` });
+  render('diagnosis');
+}
+
+function pick(next, label){
+  history_arr.push({ id:currentId, label });
+  render(next);
+}
+function pickPhen(phen, next){
+  state.phen = phen;
+  history_arr.push({ id:currentId, label:phen });
+  render(next);
+}
+function pickSev(sev, next){
+  state.sev = sev;
+  history_arr.push({ id:currentId, label:sev });
+  render(next);
+}
+
+function goBack(){
+  if(history_arr.length === 0) return;
+  history_arr.pop();
+  // Step back through state if needed
+  if(currentId === 'management'){ state.sev = null; render('severity'); return; }
+  if(currentId === 'severity'){ state.phen = null; render('phenotype'); return; }
+  if(currentId === 'phenotype'){ render('diagnosis'); return; }
+  if(currentId === 'not-dka'){ render('diagnosis'); return; }
+  if(currentId === 'diagnosis'){ state.age=null; state.weight=null; render('patient'); return; }
+}
+
+function restart(){
+  state.age=null; state.weight=null; state.phen=null; state.sev=null;
+  history_arr = [];
+  render('patient');
+}
+
+render('patient');
+</script>
+
+</body>
+</html>

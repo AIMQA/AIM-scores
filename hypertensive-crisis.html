@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hypertensive Crisis · Clinical Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:#F7F4EE; --paper-deep:#EFEAE0; --cream:#FBF8F2; --white:#FFFFFF;
+  --ink:#0B1F33; --ink-soft:#294159; --ink-mute:#5A6E80;
+  --rule:#D9D2C3; --rule-soft:#E5E0D2;
+  --accent:#8A1538; --accent-soft:#F1DAE0; --accent-deep:#5F0E26;
+  --red:#A8201A; --red-soft:#F6E3E1;
+  --amber:#9A6A00; --amber-soft:#FAEFD1;
+  --green:#155D3A; --green-soft:#DEEEDF;
+  --info:#0A4A6E; --info-soft:#DCEAF2;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter Tight',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.masthead{border-bottom:1px solid var(--rule);background:var(--white);position:sticky;top:0;z-index:50}
+.masthead-inner{max-width:1180px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;gap:16px}
+.back-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink-soft);font-size:13px;padding:6px 10px;border-radius:4px;font-weight:500;transition:all .2s}
+.back-link:hover{background:var(--paper-deep);color:var(--ink)}
+.brand-mark{width:42px;height:42px;background:var(--accent);color:var(--white);border-radius:6px;display:grid;place-items:center;font-family:var(--serif);font-weight:600;font-size:18px;font-style:italic}
+.brand-text{display:flex;flex-direction:column;line-height:1.1;gap:2px}
+.brand-text .eyebrow{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
+.brand-text .title{font-family:var(--serif);font-weight:500;font-size:17px;color:var(--ink)}
+.masthead-meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-mute)}
+
+.shell{max-width:1180px;margin:0 auto;padding:40px 32px 60px;display:grid;grid-template-columns:1fr 300px;gap:40px}
+
+.tool-head{margin-bottom:32px}
+.tool-head .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;font-weight:500;margin-bottom:10px;display:block}
+.tool-head h1{font-family:var(--serif);font-weight:400;font-size:48px;line-height:1.05;letter-spacing:-.02em;color:var(--ink);margin-bottom:14px}
+.tool-head h1 em{font-style:italic;color:var(--accent)}
+.tool-head p{font-size:15px;color:var(--ink-soft);max-width:640px}
+
+.progress{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.dot{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-mute);padding:4px 10px;border-radius:20px;background:var(--cream);border:1px solid var(--rule-soft);transition:all .2s}
+.dot .n{font-family:var(--mono);font-size:10px;color:var(--ink-mute)}
+.dot.active{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.dot.active .n{color:var(--white)}
+.dot.done{background:var(--accent-soft);color:var(--accent-deep);border-color:var(--accent-soft)}
+.dot.done .n{color:var(--accent-deep)}
+
+.card{background:var(--white);border:1px solid var(--rule);border-radius:6px;padding:32px;margin-bottom:24px;position:relative}
+.card-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:10px;display:block}
+.card h2{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:8px}
+.card h2 em{font-style:italic;color:var(--accent)}
+.card .sub{color:var(--ink-soft);font-size:14.5px;margin-bottom:20px}
+
+.q-text{font-size:16px;color:var(--ink);font-weight:500;margin:16px 0 12px}
+.opt-grid{display:grid;gap:10px;margin-top:14px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;background:var(--cream);border:1px solid var(--rule);border-radius:5px;cursor:pointer;font-family:var(--sans);font-size:14.5px;color:var(--ink);text-align:left;width:100%;transition:all .2s;font-weight:500}
+.opt:hover{background:var(--accent-soft);border-color:var(--accent);transform:translateX(2px)}
+.opt .arrow{color:var(--ink-mute);font-size:14px;transition:transform .2s}
+.opt:hover .arrow{color:var(--accent);transform:translateX(3px)}
+.opt .sub{font-size:12.5px;color:var(--ink-mute);font-weight:400;margin-top:3px;display:block}
+.opt .label-wrap{display:flex;flex-direction:column}
+
+.tile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:14px 16px;background:var(--cream);border:1px solid var(--rule);border-radius:5px;cursor:pointer;text-align:left;font-family:var(--sans);transition:all .2s}
+.tile:hover{background:var(--accent-soft);border-color:var(--accent);transform:translateY(-1px)}
+.tile-num{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;font-weight:600}
+.tile-title{font-size:14px;font-weight:600;color:var(--ink)}
+.tile-sub{font-size:12px;color:var(--ink-mute);line-height:1.4}
+
+.btn-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.btn{font-family:var(--sans);font-size:14px;font-weight:600;padding:11px 22px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:4px;cursor:pointer;transition:all .15s}
+.btn:hover{background:var(--accent);border-color:var(--accent)}
+.btn.secondary{background:transparent;color:var(--ink-soft);border-color:var(--rule)}
+.btn.secondary:hover{background:var(--paper-deep);color:var(--ink);border-color:var(--ink-soft)}
+
+.callout{display:flex;gap:14px;padding:18px;border-radius:5px;margin:16px 0;align-items:flex-start;border-left:4px solid}
+.callout .ico{flex-shrink:0;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--white)}
+.callout .body{flex:1}
+.callout .heading{font-weight:600;font-size:15px;margin-bottom:6px;color:var(--ink)}
+.callout .text{font-size:14px;color:var(--ink-soft);line-height:1.5}
+.callout.urgent{background:var(--red-soft);border-color:var(--red)}
+.callout.urgent .ico{background:var(--red)}
+.callout.warn{background:var(--amber-soft);border-color:var(--amber)}
+.callout.warn .ico{background:var(--amber)}
+.callout.good{background:var(--green-soft);border-color:var(--green)}
+.callout.good .ico{background:var(--green)}
+.callout.info{background:var(--info-soft);border-color:var(--info)}
+.callout.info .ico{background:var(--info)}
+
+.action-block{background:var(--cream);border:1px solid var(--rule);border-radius:5px;padding:18px 20px;margin:14px 0}
+.action-block h4{font-family:var(--serif);font-style:italic;font-weight:500;font-size:17px;color:var(--accent-deep);margin-bottom:10px}
+.action-block ul,.action-block ol{padding-left:18px;font-size:14px;color:var(--ink-soft);line-height:1.7}
+.action-block ul li,.action-block ol li{margin-bottom:4px}
+.action-block strong{color:var(--ink)}
+
+.target-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+.target{background:var(--white);border:1px solid var(--rule);border-radius:5px;padding:12px 14px}
+.target .label{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.target .value{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink);font-style:italic}
+
+.aside{position:sticky;top:90px;align-self:start}
+.aside-panel{background:var(--white);border:1px solid var(--rule);border-radius:6px;padding:20px 22px;margin-bottom:16px}
+.aside-panel h3{font-family:var(--serif);font-weight:500;font-size:15px;color:var(--ink);margin-bottom:12px}
+
+details.ref{border:1px solid var(--rule);background:var(--white);border-radius:5px;margin-bottom:8px}
+details.ref summary{padding:11px 14px;cursor:pointer;font-size:13.5px;color:var(--ink-soft);font-weight:500;display:flex;justify-content:space-between;align-items:center;list-style:none}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:'+';color:var(--ink-mute);font-size:18px}
+details.ref[open] summary::after{content:'−'}
+details.ref .body{padding:0 14px 12px;font-size:13px;color:var(--ink-soft);line-height:1.55}
+details.ref .body ul{padding-left:16px;margin-top:6px}
+details.ref .body li{margin-bottom:3px}
+
+.trail{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:18px;font-size:12px}
+.trail-item{padding:3px 8px;background:var(--paper-deep);color:var(--ink-soft);border-radius:3px}
+.trail-sep{color:var(--ink-mute)}
+.trail-empty{color:var(--ink-mute);font-style:italic}
+
+footer{border-top:1px solid var(--rule);background:var(--white);margin-top:40px}
+.footer-inner{max-width:1180px;margin:0 auto;padding:24px 32px;font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+.footer-inner strong{color:var(--ink-soft)}
+
+@media (max-width:880px){
+  .shell{grid-template-columns:1fr;padding:24px 20px 40px;gap:24px}
+  .aside{position:static;order:2}
+  .tool-head h1{font-size:36px}
+  .masthead-meta{display:none}
+  .tile-grid,.target-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="back-link" href="index.html">← Hub</a>
+    <div class="brand-mark">H</div>
+    <div class="brand-text">
+      <span class="eyebrow">Pathway 04</span>
+      <span class="title">Hypertensive crisis</span>
+    </div>
+    <div class="masthead-meta">BIHS 2022</div>
+  </div>
+</header>
+
+<main class="shell">
+  <section>
+    <header class="tool-head">
+      <span class="eyebrow">Decision Support</span>
+      <h1>Hypertensive <em>crisis</em></h1>
+      <p>BIHS 2022 pathway distinguishing acute severe hypertension, malignant hypertension, and ten distinct hypertensive emergencies — with diagnosis-specific BP targets and drug choices.</p>
+    </header>
+
+    <div class="progress" id="progress">
+      <span class="dot" data-step="1"><span class="n">01</span>BP</span>
+      <span class="dot" data-step="2"><span class="n">02</span>EOD</span>
+      <span class="dot" data-step="3"><span class="n">03</span>Type</span>
+      <span class="dot" data-step="4"><span class="n">04</span>Management</span>
+    </div>
+
+    <div class="trail" id="trail"><span class="trail-empty">No decisions yet — pathway not started</span></div>
+    <div id="node"></div>
+
+    <div class="btn-row">
+      <button class="btn secondary" onclick="goBack()">← Back</button>
+      <button class="btn secondary" onclick="restart()">↻ Restart</button>
+    </div>
+  </section>
+
+  <aside class="aside">
+    <div class="aside-panel">
+      <h3>Quick reference</h3>
+      <details class="ref">
+        <summary>Definitions</summary>
+        <div class="body">
+          <ul>
+            <li><strong>Hypertensive emergency:</strong> BP ≥ 180/120 with acute EOD</li>
+            <li><strong>Malignant HTN:</strong> Grade 3/4 retinopathy ± EOD</li>
+            <li><strong>Acute severe HTN:</strong> BP ≥ 180/120, no EOD, normal fundi</li>
+          </ul>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>Retinopathy grading</summary>
+        <div class="body">
+          <ul>
+            <li>Grade 1: arteriolar narrowing</li>
+            <li>Grade 2: AV nipping</li>
+            <li>Grade 3: haemorrhages + exudates</li>
+            <li>Grade 4: Grade 3 + papilloedema</li>
+          </ul>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>Critical drug rules</summary>
+        <div class="body">
+          <ul>
+            <li><strong>Phaeo:</strong> alpha always before beta blockade</li>
+            <li><strong>Aortic dissection:</strong> beta-blockade before vasodilator</li>
+            <li><strong>MHT:</strong> avoid ACEi/ARB acutely</li>
+            <li><strong>Acute stroke:</strong> do not rush BP down</li>
+            <li><strong>SAH:</strong> nimodipine for vasospasm prophylaxis</li>
+          </ul>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>Pregnancy exception</summary>
+        <div class="body">
+          <p>BP ≥ 160/110 in pregnancy may be a medical emergency requiring immediate obstetric assessment, regardless of the standard 180/120 threshold.</p>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>Source</summary>
+        <div class="body">
+          <p>Kulkarni S et al. <em>Management of hypertensive crisis: British and Irish Hypertension Society Position document.</em> J Hum Hypertens 2023;37:863–879.</p>
+        </div>
+      </details>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <strong>Disclaimer.</strong> Clinical decision support only — based on the 2022 BIHS Position Document. Does not replace clinical judgement, specialist input, or local trust policy. Always treat patient as a whole; if critically unwell, treat first and consult second.
+  </div>
+</footer>
+
+<script>
+let history_arr = [];
+let currentId = 'bp';
+
+function setStep(n){
+  document.querySelectorAll('#progress .dot').forEach(d=>{
+    const s=parseInt(d.dataset.step,10);
+    d.classList.remove('active','done');
+    if(s<n)d.classList.add('done');
+    if(s===n)d.classList.add('active');
+  });
+}
+function setTrail(){
+  const t=document.getElementById('trail');
+  if(history_arr.length===0){t.innerHTML='<span class="trail-empty">No decisions yet — pathway not started</span>';return;}
+  let h='';
+  history_arr.forEach((it,i)=>{
+    h+=`<span class="trail-item">${it.label}</span>`;
+    if(i<history_arr.length-1)h+='<span class="trail-sep">›</span>';
+  });
+  t.innerHTML=h;
+}
+
+// Emergency definitions
+const EMERGENCIES = {
+  enceph: {
+    title: 'Hypertensive encephalopathy',
+    setting: 'HDU / ITU',
+    targets: [{ label:'MAP reduction', value:'25% in 1 hour'},{label:'Then',value:'160/100 over 2–6 hr'}],
+    firstLine: 'IV labetalol or nicardipine infusion',
+    cautions: 'Avoid sublingual nifedipine (precipitous drop). MRI brain to assess PRES.',
+    workup: 'CT head urgently · MRI if PRES suspected · neurology review'
+  },
+  dissection: {
+    title: 'Aortic dissection',
+    setting: 'HDU / ITU + surgical/vascular',
+    targets: [{ label:'SBP', value:'90–120 mmHg'},{label:'HR',value:'< 60 bpm'}],
+    firstLine: 'IV esmolol or labetalol FIRST · then add nitroprusside/GTN if needed',
+    cautions: 'Beta-blockade MUST precede vasodilator (avoids reflex tachycardia). CT aortogram mandatory. Type A → cardiothoracic emergency.',
+    workup: 'CT aortogram · Type A surgical · Type B medical/endovascular'
+  },
+  stroke: {
+    title: 'Acute ischaemic stroke',
+    setting: 'Stroke unit / HASU',
+    targets: [{ label:'If thrombolysis', value:'< 185/110'},{label:'No thrombolysis',value:'do not rush BP down'}],
+    firstLine: 'IV labetalol (caution); only if BP > 220/120 or thrombolysis planned',
+    cautions: 'Do not rush BP down — risks worsening penumbra. Permissive hypertension is appropriate without intervention indication.',
+    workup: 'CT head · stroke team review · consider thrombolysis / thrombectomy'
+  },
+  ich: {
+    title: 'Intracerebral haemorrhage',
+    setting: 'Stroke unit / HDU',
+    targets: [{ label:'SBP', value:'< 140 mmHg within 1 hr'},{label:'Avoid',value:'SBP drop > 60 mmHg'}],
+    firstLine: 'IV labetalol or nicardipine infusion',
+    cautions: 'Aim for sustained SBP < 140 mmHg (INTERACT-2). Avoid precipitous drops. Neurosurgical review for posterior fossa bleeds.',
+    workup: 'CT head · neurosurgery referral · reverse anticoagulation if applicable'
+  },
+  sah: {
+    title: 'Subarachnoid haemorrhage',
+    setting: 'Neuro ITU',
+    targets: [{ label:'SBP', value:'< 160 mmHg pre-clip'},{label:'Post-clip',value:'permissive'}],
+    firstLine: 'IV labetalol; nimodipine 60 mg PO 4-hourly for vasospasm prophylaxis',
+    cautions: 'LP if CT negative and high clinical suspicion. Neurosurgical input mandatory.',
+    workup: 'CT head · LP if CT−ve · CT angiography · neurosurgery'
+  },
+  oedema: {
+    title: 'Acute pulmonary oedema',
+    setting: 'HDU / coronary care',
+    targets: [{ label:'SBP', value:'reduce 20–25% in first hour'},{label:'Then',value:'<160/100'}],
+    firstLine: 'IV GTN infusion + IV furosemide; CPAP/NIV as needed',
+    cautions: 'Avoid beta-blockade in acute heart failure. Consider underlying ACS.',
+    workup: 'CXR · ECG · troponin · echo · BNP'
+  },
+  acs: {
+    title: 'Acute coronary syndrome',
+    setting: 'Coronary care / cath lab',
+    targets: [{ label:'SBP', value:'< 160 mmHg'},{label:'HR',value:'50–70 bpm'}],
+    firstLine: 'IV GTN ± IV beta-blocker (esmolol/metoprolol); aspirin, P2Y12, anticoagulation',
+    cautions: 'Avoid in RV infarction. Standard ACS pathway alongside BP control.',
+    workup: 'ECG · troponin · cath lab activation for STEMI · echo'
+  },
+  phaeo: {
+    title: 'Phaeochromocytoma crisis',
+    setting: 'HDU / ITU + endocrine',
+    targets: [{ label:'SBP', value:'< 160 mmHg'},{label:'After alpha',value:'add beta for HR'}],
+    firstLine: 'IV phentolamine OR oral phenoxybenzamine — alpha-blockade FIRST',
+    cautions: 'Beta-blockade BEFORE alpha = unopposed alpha vasoconstriction → catastrophic hypertension. Never give propranolol first.',
+    workup: 'Plasma/urine metanephrines · CT adrenals · endocrine referral'
+  },
+  preg: {
+    title: 'Severe pre-eclampsia / eclampsia',
+    setting: 'Delivery suite / HDU',
+    targets: [{ label:'BP', value:'< 160/110'},{label:'Maintain',value:'> 140/90 for placental perfusion'}],
+    firstLine: 'IV labetalol or IV hydralazine; MgSO₄ 4 g loading then 1 g/hr for eclampsia/severe PE',
+    cautions: 'Delivery is definitive treatment. ACEi/ARB CONTRAINDICATED. Avoid nitroprusside.',
+    workup: 'PET bloods · CTG · obstetric + anaesthetic input · expedite delivery'
+  },
+  aki: {
+    title: 'Acute kidney injury / renal crisis',
+    setting: 'HDU + nephrology',
+    targets: [{ label:'MAP reduction', value:'20% over 1 hr'},{label:'Then',value:'<160/100 over 6–24 hr'}],
+    firstLine: 'IV labetalol or nicardipine; consider IV GTN',
+    cautions: 'Investigate for renal artery stenosis. Avoid ACEi/ARB until renal function stable.',
+    workup: 'U+E · urinalysis · renal USS · renal Doppler · nephrology referral'
+  }
+};
+
+const nodes = {
+  bp: () => `
+    <div class="card">
+      <span class="card-tag">Step 01 · BP threshold</span>
+      <h2>Blood pressure <em>threshold</em></h2>
+      <p class="sub">Confirm with repeat measurement using a validated sphygmomanometer. Measure in both arms; address pain/anxiety first.</p>
+      <div class="callout info">
+        <div class="ico">i</div>
+        <div class="body">
+          <div class="heading">Pregnancy exception</div>
+          <div class="text">In pregnancy, BP ≥ <strong>160/110 mmHg</strong> may be a medical emergency requiring immediate obstetric assessment.</div>
+        </div>
+      </div>
+      <p class="q-text">Is the blood pressure <strong>≥ 180/120 mmHg</strong>?</p>
+      <div class="opt-grid">
+        <button class="opt" onclick="pick('eod','BP ≥ 180/120')">
+          <span class="label-wrap"><span>Yes — ≥ 180/120 mmHg</span><span class="sub">Proceed to EOD assessment</span></span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="opt" onclick="pick('not-scope','BP < 180/120')">
+          <span class="label-wrap"><span>No — below threshold</span><span class="sub">Standard hypertension management</span></span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>`,
+
+  'not-scope': () => `
+    <div class="card">
+      <span class="card-tag">Outcome · Below threshold</span>
+      <h2>Below <em>crisis</em> threshold</h2>
+      <div class="callout good">
+        <div class="ico">✓</div>
+        <div class="body">
+          <div class="heading">Standard chronic hypertension management</div>
+          <div class="text">BP &lt; 180/120 in an asymptomatic patient does not meet the BIHS threshold for hypertensive crisis. Manage per NICE NG136.</div>
+        </div>
+      </div>
+      <div class="action-block">
+        <h4>Plan</h4>
+        <ul>
+          <li>Ensure follow-up within 1–4 weeks</li>
+          <li>Review current antihypertensive medications and adherence</li>
+          <li>Consider home BP monitoring or ABPM</li>
+          <li>Refer to hypertension clinic if resistant or secondary cause suspected</li>
+        </ul>
+      </div>
+      <div class="btn-row"><button class="btn" onclick="restart()">↻ Restart</button></div>
+    </div>`,
+
+  eod: () => `
+    <div class="card">
+      <span class="card-tag">Step 02 · End organ damage</span>
+      <h2>Evidence of acute <em>end organ damage?</em></h2>
+      <p class="sub">Acute EOD determines whether this is a hypertensive emergency requiring immediate intervention.</p>
+      <div class="action-block">
+        <h4>Screen across systems</h4>
+        <ul>
+          <li><strong>Neurological:</strong> severe headache, confusion, seizures, focal deficit, visual disturbance, reduced GCS</li>
+          <li><strong>Cardiac:</strong> chest pain (ACS/dissection), acute breathlessness (pulmonary oedema)</li>
+          <li><strong>Renal:</strong> oliguria, haematuria, rapidly rising creatinine</li>
+          <li><strong>Vascular:</strong> tearing back/chest pain, unequal pulses, radio-femoral delay</li>
+        </ul>
+      </div>
+      <div class="opt-grid">
+        <button class="opt" onclick="pick('emergency-type','EOD present')">
+          <span class="label-wrap"><span>Yes — EOD present</span><span class="sub">Hypertensive emergency — select diagnosis</span></span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="opt" onclick="pick('fundi','No EOD found')">
+          <span class="label-wrap"><span>No — no EOD found</span><span class="sub">Check fundi for malignant HTN</span></span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>`,
+
+  fundi: () => `
+    <div class="card">
+      <span class="card-tag">Step 02 · Fundoscopy</span>
+      <h2>Fundoscopy <em>findings?</em></h2>
+      <p class="sub">Grade 3 (haemorrhages + exudates) or Grade 4 (also papilloedema) retinopathy indicates malignant hypertension.</p>
+      <div class="opt-grid">
+        <button class="opt" onclick="pick('mht','Grade 3 / 4 retinopathy')">
+          <span class="label-wrap"><span>Grade 3 or 4 retinopathy</span><span class="sub">Malignant hypertension pathway</span></span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="opt" onclick="pick('acute-severe','Normal or grade 1–2')">
+          <span class="label-wrap"><span>Normal or grade 1–2</span><span class="sub">Acute severe hypertension</span></span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>`,
+
+  'acute-severe': () => `
+    <div class="card">
+      <span class="card-tag">Outcome · Acute severe HTN</span>
+      <h2>Acute <em>severe</em> hypertension</h2>
+      <div class="callout warn">
+        <div class="ico">⚠</div>
+        <div class="body">
+          <div class="heading">Oral therapy — gradual reduction over days to weeks</div>
+          <div class="text">No EOD and no malignant retinopathy. IV therapy not indicated and risks iatrogenic ischaemia.</div>
+        </div>
+      </div>
+      <div class="action-block">
+        <h4>Management</h4>
+        <ul>
+          <li>First-line: <strong>oral amlodipine 5 mg</strong> or LA nifedipine 10–30 mg</li>
+          <li>Address pain, anxiety, urinary retention which may be driving BP</li>
+          <li>Review and optimise existing antihypertensives</li>
+          <li>Reassess BP in 24–48 hr; aim for gradual reduction over days to weeks</li>
+          <li>Avoid acute IV therapy unless EOD develops</li>
+        </ul>
+      </div>
+      <div class="action-block">
+        <h4>Investigations</h4>
+        <ul>
+          <li>U+Es, creatinine, urinalysis (proteinuria, haematuria)</li>
+          <li>ECG · CXR if cardiac symptoms · fundoscopy</li>
+          <li>Consider secondary HTN screen if young or refractory</li>
+        </ul>
+      </div>
+      <div class="btn-row"><button class="btn" onclick="restart()">↻ Restart</button></div>
+    </div>`,
+
+  mht: () => `
+    <div class="card">
+      <span class="card-tag">Outcome · Malignant HTN</span>
+      <h2>Malignant <em>hypertension</em></h2>
+      <p class="sub">Grade 3/4 retinopathy with or without other EOD.</p>
+      <p class="q-text">Are there complicating features (renal impairment, encephalopathy, cardiac failure)?</p>
+      <div class="opt-grid">
+        <button class="opt" onclick="pick('mht-complicated','Complicated MHT')">
+          <span class="label-wrap"><span>Yes — complicated</span><span class="sub">Admit, monitor, consider IV therapy</span></span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="opt" onclick="pick('mht-uncomplicated','Uncomplicated MHT')">
+          <span class="label-wrap"><span>No — uncomplicated</span><span class="sub">Admit + oral therapy</span></span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>`,
+
+  'mht-uncomplicated': () => `
+    <div class="card">
+      <span class="card-tag">Outcome · Uncomplicated MHT</span>
+      <h2>Uncomplicated malignant <em>hypertension</em></h2>
+      <div class="callout warn">
+        <div class="ico">⚠</div>
+        <div class="body">
+          <div class="heading">Admit and start oral therapy</div>
+          <div class="text">Avoid IV therapy and avoid ACEi/ARB acutely — RAAS is over-activated and these risk a precipitous BP fall.</div>
+        </div>
+      </div>
+      <div class="action-block">
+        <h4>First-line</h4>
+        <ul>
+          <li><strong>Amlodipine 5 mg OD</strong> OR <strong>LA nifedipine 10–30 mg OD</strong></li>
+          <li>Add second agent if needed (e.g. doxazosin, indapamide)</li>
+          <li><strong>Avoid ACEi / ARB</strong> in the first 24–48 hr</li>
+        </ul>
+      </div>
+      <div class="action-block">
+        <h4>Investigations</h4>
+        <ul>
+          <li>U+E, creatinine, urinalysis · ECG · echo · ophthalmology review</li>
+          <li>Secondary cause screen (renal Doppler, plasma metanephrines, aldosterone:renin)</li>
+        </ul>
+      </div>
+      <div class="btn-row"><button class="btn" onclick="restart()">↻ Restart</button></div>
+    </div>`,
+
+  'mht-complicated': () => `
+    <div class="card">
+      <span class="card-tag">Outcome · Complicated MHT</span>
+      <h2>Complicated malignant <em>hypertension</em></h2>
+      <div class="callout urgent">
+        <div class="ico">!</div>
+        <div class="body">
+          <div class="heading">Admit to HDU — IV therapy</div>
+          <div class="text">Complicated by AKI, encephalopathy or cardiac failure. Cautious BP reduction in monitored environment.</div>
+        </div>
+      </div>
+      <div class="action-block">
+        <h4>BP targets</h4>
+        <ul>
+          <li>Reduce MAP by <strong>25% in 1 hour</strong></li>
+          <li>Then to <strong>160/100 mmHg over 2–6 hours</strong></li>
+          <li>Avoid precipitous drops</li>
+        </ul>
+      </div>
+      <div class="action-block">
+        <h4>Drugs</h4>
+        <ul>
+          <li>IV labetalol infusion (1st line)</li>
+          <li>IV nicardipine alternative</li>
+          <li>Avoid ACEi/ARB acutely</li>
+        </ul>
+      </div>
+      <div class="action-block">
+        <h4>Investigations</h4>
+        <ul>
+          <li>Bloods · ECG · echo · CT head if neuro features</li>
+          <li>Renal artery imaging · ophthalmology · secondary HTN screen</li>
+        </ul>
+      </div>
+      <div class="btn-row"><button class="btn" onclick="restart()">↻ Restart</button></div>
+    </div>`,
+
+  'emergency-type': () => `
+    <div class="card">
+      <span class="card-tag">Step 03 · Emergency type</span>
+      <h2>Select the primary <em>emergency</em></h2>
+      <p class="sub">Choose the predominant emergency state to guide diagnosis-specific management.</p>
+      <div class="tile-grid">
+        ${Object.entries(EMERGENCIES).map(([k,v],i)=>`
+          <button class="tile" onclick="pickEmergency('${k}','${v.title}')">
+            <span class="tile-num">EM · 0${i+1}</span>
+            <span class="tile-title">${v.title}</span>
+          </button>`).join('')}
+      </div>
+    </div>`,
+
+  'emergency-detail': () => renderEmergencyDetail(),
+};
+
+let selectedEmergency = null;
+function pickEmergency(key, label){
+  selectedEmergency = key;
+  history_arr.push({ id:'emergency-type', label });
+  render('emergency-detail');
+}
+
+function renderEmergencyDetail(){
+  const e = EMERGENCIES[selectedEmergency];
+  if(!e) return '<div class="card"><p>Not found.</p></div>';
+  return `
+    <div class="card">
+      <span class="card-tag">Step 04 · Management</span>
+      <h2>${e.title}</h2>
+      <p class="sub">Setting: <strong>${e.setting}</strong></p>
+
+      <div class="callout urgent">
+        <div class="ico">!</div>
+        <div class="body">
+          <div class="heading">Key clinical rule</div>
+          <div class="text">${e.cautions}</div>
+        </div>
+      </div>
+
+      <h4 style="font-family:var(--serif);font-style:italic;font-size:17px;margin:20px 0 10px;color:var(--accent-deep)">BP targets</h4>
+      <div class="target-grid">
+        ${e.targets.map(t=>`<div class="target"><div class="label">${t.label}</div><div class="value">${t.value}</div></div>`).join('')}
+      </div>
+
+      <div class="action-block">
+        <h4>Drug treatment — first line</h4>
+        <ul><li>${e.firstLine}</li></ul>
+      </div>
+
+      <div class="action-block">
+        <h4>Investigations &amp; referrals</h4>
+        <ul><li>${e.workup}</li></ul>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn secondary" onclick="render('emergency-type')">← Choose different emergency</button>
+        <button class="btn" onclick="restart()">↻ New patient</button>
+      </div>
+    </div>`;
+}
+
+function render(id){
+  currentId = id;
+  document.getElementById('node').innerHTML = nodes[id] ? nodes[id]() : '<div class="card"><p>Node not found.</p></div>';
+  const stepMap = { bp:1, 'not-scope':1, eod:2, fundi:2, 'acute-severe':2, mht:2, 'mht-uncomplicated':2, 'mht-complicated':2, 'emergency-type':3, 'emergency-detail':4 };
+  setStep(stepMap[id] || 1);
+  setTrail();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function pick(next, label){
+  history_arr.push({ id:currentId, label });
+  render(next);
+}
+
+function goBack(){
+  if(history_arr.length===0) return;
+  history_arr.pop();
+  const prevMap = { 'not-scope':'bp', eod:'bp', 'emergency-type':'eod', 'emergency-detail':'emergency-type', fundi:'eod', 'acute-severe':'fundi', mht:'fundi', 'mht-uncomplicated':'mht', 'mht-complicated':'mht' };
+  const prev = prevMap[currentId];
+  if(prev) render(prev);
+}
+
+function restart(){
+  history_arr = [];
+  selectedEmergency = null;
+  render('bp');
+}
+
+render('bp');
+</script>
+</body>
+</html>

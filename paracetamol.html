@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paracetamol Overdose · Clinical Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:#F7F4EE; --paper-deep:#EFEAE0; --cream:#FBF8F2; --white:#FFFFFF;
+  --ink:#0B1F33; --ink-soft:#294159; --ink-mute:#5A6E80;
+  --rule:#D9D2C3; --rule-soft:#E5E0D2;
+  --accent:#2C6E49; --accent-soft:#DEE9E0; --accent-deep:#1F5135;
+  --red:#A8201A; --red-soft:#F6E3E1;
+  --amber:#9A6A00; --amber-soft:#FAEFD1;
+  --green:#155D3A; --green-soft:#DEEEDF;
+  --info:#0A4A6E; --info-soft:#DCEAF2;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter Tight',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.masthead{border-bottom:1px solid var(--rule);background:var(--white);position:sticky;top:0;z-index:50}
+.masthead-inner{max-width:1180px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;gap:16px}
+.back-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink-soft);font-size:13px;padding:6px 10px;border-radius:4px;font-weight:500;transition:all .2s}
+.back-link:hover{background:var(--paper-deep);color:var(--ink)}
+.brand-mark{width:42px;height:42px;background:var(--accent);color:var(--white);border-radius:6px;display:grid;place-items:center;font-family:var(--serif);font-weight:600;font-size:18px;font-style:italic}
+.brand-text{display:flex;flex-direction:column;line-height:1.1;gap:2px}
+.brand-text .eyebrow{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
+.brand-text .title{font-family:var(--serif);font-weight:500;font-size:17px;color:var(--ink)}
+.masthead-meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-mute)}
+
+.shell{max-width:1180px;margin:0 auto;padding:40px 32px 60px;display:grid;grid-template-columns:1fr 300px;gap:40px}
+
+.tool-head{margin-bottom:32px}
+.tool-head .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;font-weight:500;margin-bottom:10px;display:block}
+.tool-head h1{font-family:var(--serif);font-weight:400;font-size:48px;line-height:1.05;letter-spacing:-.02em;color:var(--ink);margin-bottom:14px}
+.tool-head h1 em{font-style:italic;color:var(--accent)}
+.tool-head p{font-size:15px;color:var(--ink-soft);max-width:640px}
+
+.progress{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.dot{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-mute);padding:4px 10px;border-radius:20px;background:var(--cream);border:1px solid var(--rule-soft);transition:all .2s}
+.dot .n{font-family:var(--mono);font-size:10px;color:var(--ink-mute)}
+.dot.active{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.dot.active .n{color:var(--white)}
+.dot.done{background:var(--accent-soft);color:var(--accent-deep);border-color:var(--accent-soft)}
+.dot.done .n{color:var(--accent-deep)}
+
+.card{background:var(--white);border:1px solid var(--rule);border-radius:6px;padding:32px;margin-bottom:24px;position:relative}
+.card-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:10px;display:block}
+.card h2{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:8px}
+.card h2 em{font-style:italic;color:var(--accent)}
+.card .sub{color:var(--ink-soft);font-size:14.5px;margin-bottom:20px}
+
+.q-text{font-size:16px;color:var(--ink);font-weight:500;margin:16px 0 12px}
+.opt-grid{display:grid;gap:10px;margin-top:14px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;background:var(--cream);border:1px solid var(--rule);border-radius:5px;cursor:pointer;font-family:var(--sans);font-size:14.5px;color:var(--ink);text-align:left;width:100%;transition:all .2s;font-weight:500}
+.opt:hover{background:var(--accent-soft);border-color:var(--accent);transform:translateX(2px)}
+.opt .arrow{color:var(--ink-mute);font-size:14px;transition:transform .2s}
+.opt:hover .arrow{color:var(--accent);transform:translateX(3px)}
+.opt .sub{font-size:12.5px;color:var(--ink-mute);font-weight:400;margin-top:3px;display:block}
+.opt .label-wrap{display:flex;flex-direction:column}
+
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;color:var(--ink-mute);font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;font-weight:500}
+.field input,.field select{font-family:var(--sans);font-size:15px;padding:10px 12px;border:1px solid var(--rule);background:var(--cream);border-radius:4px;color:var(--ink)}
+.field input:focus,.field select:focus{outline:2px solid var(--accent);outline-offset:1px}
+
+.btn-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.btn{font-family:var(--sans);font-size:14px;font-weight:600;padding:11px 22px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:4px;cursor:pointer;transition:all .15s}
+.btn:hover{background:var(--accent);border-color:var(--accent)}
+.btn.secondary{background:transparent;color:var(--ink-soft);border-color:var(--rule)}
+.btn.secondary:hover{background:var(--paper-deep);color:var(--ink);border-color:var(--ink-soft)}
+
+.callout{display:flex;gap:14px;padding:18px;border-radius:5px;margin:16px 0;align-items:flex-start;border-left:4px solid}
+.callout .ico{flex-shrink:0;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--white)}
+.callout .body{flex:1}
+.callout .heading{font-weight:600;font-size:15px;margin-bottom:6px;color:var(--ink)}
+.callout .text{font-size:14px;color:var(--ink-soft);line-height:1.5}
+.callout.urgent{background:var(--red-soft);border-color:var(--red)}
+.callout.urgent .ico{background:var(--red)}
+.callout.warn{background:var(--amber-soft);border-color:var(--amber)}
+.callout.warn .ico{background:var(--amber)}
+.callout.good{background:var(--green-soft);border-color:var(--green)}
+.callout.good .ico{background:var(--green)}
+.callout.info{background:var(--info-soft);border-color:var(--info)}
+.callout.info .ico{background:var(--info)}
+
+.action-block{background:var(--cream);border:1px solid var(--rule);border-radius:5px;padding:18px 20px;margin:14px 0}
+.action-block h4{font-family:var(--serif);font-style:italic;font-weight:500;font-size:17px;color:var(--accent-deep);margin-bottom:10px}
+.action-block ul,.action-block ol{padding-left:18px;font-size:14px;color:var(--ink-soft);line-height:1.7}
+.action-block ul li,.action-block ol li{margin-bottom:4px}
+.action-block strong{color:var(--ink)}
+
+/* SNAP dosing table */
+.dose-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13.5px}
+.dose-table th{text-align:left;padding:10px 12px;background:var(--accent);color:var(--white);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+.dose-table td{padding:10px 12px;border-bottom:1px solid var(--rule-soft);color:var(--ink-soft);font-family:var(--mono);font-size:12.5px}
+.dose-table tr:last-child td{border-bottom:none}
+.dose-table tr.highlight td{background:var(--accent-soft);color:var(--ink);font-weight:600}
+
+.aside{position:sticky;top:90px;align-self:start}
+.aside-panel{background:var(--white);border:1px solid var(--rule);border-radius:6px;padding:20px 22px;margin-bottom:16px}
+.aside-panel h3{font-family:var(--serif);font-weight:500;font-size:15px;color:var(--ink);margin-bottom:12px}
+
+details.ref{border:1px solid var(--rule);background:var(--white);border-radius:5px;margin-bottom:8px}
+details.ref summary{padding:11px 14px;cursor:pointer;font-size:13.5px;color:var(--ink-soft);font-weight:500;display:flex;justify-content:space-between;align-items:center;list-style:none}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:'+';color:var(--ink-mute);font-size:18px}
+details.ref[open] summary::after{content:'−'}
+details.ref .body{padding:0 14px 12px;font-size:13px;color:var(--ink-soft);line-height:1.55}
+details.ref .body ul{padding-left:16px;margin-top:6px}
+details.ref .body li{margin-bottom:3px}
+
+.trail{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:18px;font-size:12px}
+.trail-item{padding:3px 8px;background:var(--paper-deep);color:var(--ink-soft);border-radius:3px}
+.trail-sep{color:var(--ink-mute)}
+.trail-empty{color:var(--ink-mute);font-style:italic}
+
+footer{border-top:1px solid var(--rule);background:var(--white);margin-top:40px}
+.footer-inner{max-width:1180px;margin:0 auto;padding:24px 32px;font-size:12.5px;color:var(--ink-mute);line-height:1.6}
+.footer-inner strong{color:var(--ink-soft)}
+
+@media (max-width:880px){
+  .shell{grid-template-columns:1fr;padding:24px 20px 40px;gap:24px}
+  .aside{position:static;order:2}
+  .tool-head h1{font-size:36px}
+  .masthead-meta{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="back-link" href="index.html">← Hub</a>
+    <div class="brand-mark">P</div>
+    <div class="brand-text">
+      <span class="eyebrow">Pathway 03</span>
+      <span class="title">Paracetamol overdose</span>
+    </div>
+    <div class="masthead-meta">SNAP · ≥ 40 kg</div>
+  </div>
+</header>
+
+<main class="shell">
+  <section>
+    <header class="tool-head">
+      <span class="eyebrow">Decision Support</span>
+      <h1>Paracetamol <em>overdose</em></h1>
+      <p>Step-by-step interpretation of the paracetamol overdose pathway. Enter the patient's weight, type of ingestion, and timing — the tool returns recommended actions and weight-banded SNAP acetylcysteine dosing.</p>
+    </header>
+
+    <div class="callout warn">
+      <div class="ico">⚠</div>
+      <div class="body">
+        <div class="heading">Before you begin</div>
+        <div class="text">This tool is for patients <strong>≥ 40 kg</strong>. For patients &lt; 40 kg, consult Toxbase. All deliberate overdoses require Liaison Psychiatry assessment before discharge.</div>
+      </div>
+    </div>
+
+    <div class="progress" id="progress">
+      <span class="dot" data-step="1"><span class="n">01</span>Weight</span>
+      <span class="dot" data-step="2"><span class="n">02</span>Type</span>
+      <span class="dot" data-step="3"><span class="n">03</span>Detail</span>
+      <span class="dot" data-step="4"><span class="n">04</span>Recommendation</span>
+    </div>
+
+    <div class="trail" id="trail"><span class="trail-empty">No decisions yet — pathway not started</span></div>
+    <div id="node"></div>
+
+    <div class="btn-row">
+      <button class="btn secondary" onclick="goBack()">← Back</button>
+      <button class="btn secondary" onclick="restart()">↻ Restart</button>
+    </div>
+  </section>
+
+  <aside class="aside">
+    <div class="aside-panel">
+      <h3>Quick reference</h3>
+      <details class="ref">
+        <summary>Toxic thresholds</summary>
+        <div class="body">
+          <ul>
+            <li><strong>Acute overdose:</strong> ≥ 150 mg/kg risk of toxicity</li>
+            <li><strong>Therapeutic excess:</strong> ≥ 75 mg/kg in 24 h</li>
+            <li><strong>High-risk groups:</strong> lower thresholds apply</li>
+          </ul>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>SNAP regimen (overview)</summary>
+        <div class="body">
+          <ul>
+            <li><strong>Bag 1:</strong> 100 mg/kg over 2 hr</li>
+            <li><strong>Bag 2:</strong> 200 mg/kg over 10 hr</li>
+            <li>Total course: 12 hr</li>
+            <li>Doses capped at 110 kg</li>
+          </ul>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>High-risk groups</summary>
+        <div class="body">
+          <ul>
+            <li>Malnutrition · chronic alcohol excess</li>
+            <li>Eating disorders</li>
+            <li>HIV · cystic fibrosis</li>
+            <li>Enzyme-inducing medications</li>
+          </ul>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>Bloods bundle</summary>
+        <div class="body">
+          <ul>
+            <li>Paracetamol concentration (≥ 4 hr post)</li>
+            <li>U+Es, LFTs (especially ALT)</li>
+            <li>INR · VBG</li>
+            <li>PICS/ICE "overdose" bundle</li>
+          </ul>
+        </div>
+      </details>
+      <details class="ref">
+        <summary>Contact NPIS</summary>
+        <div class="body">
+          <ul>
+            <li>NPIS: <strong>0844 892 0111</strong></li>
+            <li>Online: <strong>toxbase.org</strong></li>
+            <li>Discuss any uncertainty</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <strong>Disclaimer.</strong> Clinical decision support only. Does not replace clinical assessment. In case of uncertainty discuss with the National Poisons Information Service on 0844 892 0111 or consult Toxbase. All deliberate overdoses require Liaison Psychiatry assessment prior to discharge.
+  </div>
+</footer>
+
+<script>
+const state = { weight:null, type:null, acuteTime:null, amountMg:null, amountMgPerKg:null, hep:null, teAmount:null, teMgPerKg:null };
+let history_arr = [];
+let currentId = 'weight';
+
+function setStep(n){
+  document.querySelectorAll('#progress .dot').forEach(d=>{
+    const s=parseInt(d.dataset.step,10);
+    d.classList.remove('active','done');
+    if(s<n)d.classList.add('done');
+    if(s===n)d.classList.add('active');
+  });
+}
+function setTrail(){
+  const t=document.getElementById('trail');
+  if(history_arr.length===0){t.innerHTML='<span class="trail-empty">No decisions yet — pathway not started</span>';return;}
+  let h='';
+  history_arr.forEach((it,i)=>{
+    h+=`<span class="trail-item">${it.label}</span>`;
+    if(i<history_arr.length-1)h+='<span class="trail-sep">›</span>';
+  });
+  t.innerHTML=h;
+}
+
+// SNAP dosing table — weight-banded (capped at 110 kg)
+const SNAP_BANDS = [
+  { min:40, max:49,  bag1:4500, bag2:9000 },
+  { min:50, max:59,  bag1:5500, bag2:11000 },
+  { min:60, max:69,  bag1:6500, bag2:13000 },
+  { min:70, max:79,  bag1:7500, bag2:15000 },
+  { min:80, max:89,  bag1:8500, bag2:17000 },
+  { min:90, max:99,  bag1:9500, bag2:19000 },
+  { min:100,max:109, bag1:10500,bag2:21000 },
+  { min:110,max:999, bag1:11000,bag2:22000 },
+];
+function snapBandFor(w){
+  return SNAP_BANDS.find(b=> w>=b.min && w<=b.max) || SNAP_BANDS[SNAP_BANDS.length-1];
+}
+function renderSnapTable(w){
+  const band = snapBandFor(w);
+  let rows = SNAP_BANDS.map(b=>{
+    const isHere = b===band;
+    const range = b.max===999 ? '≥ 110 kg' : `${b.min}–${b.max} kg`;
+    return `<tr class="${isHere?'highlight':''}"><td>${range}</td><td>${b.bag1} mg</td><td>${b.bag2} mg</td></tr>`;
+  }).join('');
+  return `<table class="dose-table">
+    <thead><tr><th>Weight</th><th>Bag 1 (over 2 hr)</th><th>Bag 2 (over 10 hr)</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+const nodes = {
+  weight: () => `
+    <div class="card">
+      <span class="card-tag">Step 01 · Weight</span>
+      <h2>Patient <em>weight</em></h2>
+      <p class="sub">Used to calculate ingested dose per kg and SNAP regimen dose. Capped at 110 kg.</p>
+      <div class="input-row">
+        <div class="field">
+          <label>Weight (kg)</label>
+          <input type="number" id="in-wt" min="40" max="200" step="0.5" placeholder="e.g. 70">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="submitWeight()">Continue →</button>
+      </div>
+    </div>`,
+
+  type: () => `
+    <div class="card">
+      <span class="card-tag">Step 02 · Ingestion type</span>
+      <h2>Type of <em>ingestion?</em></h2>
+      <p class="sub">Determines whether NAC is indicated and which thresholds apply.</p>
+      <div class="opt-grid">
+        <button class="opt" onclick="pickType('acute','Acute single overdose')">
+          <span class="label-wrap"><span>Acute single overdose</span><span class="sub">All ingested within 1 hour</span></span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="opt" onclick="pickType('staggered','Staggered overdose')">
+          <span class="label-wrap"><span>Staggered overdose</span><span class="sub">Ingested over &gt; 1 hour with intent to overdose</span></span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="opt" onclick="pickType('therapeutic','Therapeutic excess')">
+          <span class="label-wrap"><span>Therapeutic excess</span><span class="sub">Excessive use without overdose intent (e.g. for pain)</span></span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>`,
+
+  // ===== ACUTE =====
+  acute: () => `
+    <div class="card">
+      <span class="card-tag">Step 03 · Acute detail</span>
+      <h2>Acute overdose <em>detail</em></h2>
+      <p class="sub">Enter total dose and time since ingestion.</p>
+      <div class="input-row">
+        <div class="field">
+          <label>Total paracetamol ingested (mg)</label>
+          <input type="number" id="in-amt" min="0" placeholder="e.g. 15000">
+        </div>
+        <div class="field">
+          <label>Time since ingestion</label>
+          <select id="in-time">
+            <option value="">— select —</option>
+            <option value="<1">&lt; 1 hour</option>
+            <option value="1-4">1 – 4 hours</option>
+            <option value="4-8">4 – 8 hours</option>
+            <option value="8-24">8 – 24 hours</option>
+            <option value=">24">&gt; 24 hours</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="submitAcute()">Generate recommendation →</button>
+      </div>
+    </div>`,
+
+  // ===== STAGGERED =====
+  staggered: () => `
+    <div class="card">
+      <span class="card-tag">Step 03 · Staggered detail</span>
+      <h2>Staggered <em>overdose</em></h2>
+      <p class="sub">Confirm the staggered pattern. All staggered overdoses require IV NAC without delay.</p>
+      <div class="callout urgent">
+        <div class="ico">!</div>
+        <div class="body">
+          <div class="heading">Start IV acetylcysteine without delay</div>
+          <div class="text">Do not wait for paracetamol concentration. Complete the full SNAP infusion regardless of level.</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="pickRec('rec-staggered','Confirm staggered')">Confirm → recommendation</button>
+      </div>
+    </div>`,
+
+  // ===== THERAPEUTIC =====
+  therapeutic: () => `
+    <div class="card">
+      <span class="card-tag">Step 03 · Therapeutic excess</span>
+      <h2>Therapeutic excess <em>detail</em></h2>
+      <p class="sub">Total ingested over 24 hours, and whether hepatic injury is suspected.</p>
+      <div class="input-row">
+        <div class="field">
+          <label>Total in 24 hr (g)</label>
+          <input type="number" id="in-teamt" min="0" step="0.5" placeholder="e.g. 8">
+        </div>
+        <div class="field">
+          <label>Hepatic injury features?</label>
+          <select id="in-hep">
+            <option value="">— select —</option>
+            <option value="no">No — none</option>
+            <option value="yes">Yes — jaundice / RUQ pain</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" onclick="submitTherapeutic()">Generate recommendation →</button>
+      </div>
+    </div>`,
+
+  // ===== RECOMMENDATIONS =====
+  'rec-acute': () => renderAcuteRec(),
+  'rec-staggered': () => renderStaggeredRec(),
+  'rec-therapeutic': () => renderTherapeuticRec(),
+};
+
+function renderHeadSummary(){
+  const wt = state.weight;
+  const wtCapped = Math.min(wt, 110);
+  let lines = [`<strong>${wt} kg</strong>`];
+  if(wt > 110) lines.push('<span style="color:var(--ink-mute)">(capped at 110 kg)</span>');
+  if(state.type === 'acute' && state.amountMgPerKg) lines.push(`${state.amountMgPerKg.toFixed(0)} mg/kg · ${state.acuteTime} h`);
+  if(state.type === 'staggered') lines.push('Staggered');
+  if(state.type === 'therapeutic' && state.teMgPerKg) lines.push(`Therapeutic · ${state.teMgPerKg.toFixed(0)} mg/kg/24h`);
+  return `<p class="sub">${lines.join(' · ')}</p>`;
+}
+
+function renderAcuteRec(){
+  const t = state.acuteTime;
+  const wt = Math.min(state.weight, 110);
+  const over150 = state.amountMgPerKg && state.amountMgPerKg >= 150;
+  const unknown = !state.amountMgPerKg;
+
+  let body = '';
+  let needNAC = false;
+  let banner = '';
+
+  if(t === '<1'){
+    banner = `<div class="callout info"><div class="ico">i</div><div class="body"><div class="heading">Wait until 4 hours for interpretable bloods</div><div class="text">Paracetamol level before 4 hours cannot be plotted on the nomogram.</div></div></div>`;
+    if(over150 || unknown){
+      body += `<div class="action-block"><h4>Activated charcoal — consider</h4><ul><li>50 g orally (1 g/kg in children) if ingestion &gt; 150 mg/kg, within 1 hour</li><li>Only if normal conscious level and able to tolerate</li></ul></div>`;
+    }
+    body += `<div class="action-block"><h4>Take bloods at 4 hours post-ingestion</h4><ul><li>Paracetamol concentration (4 h sample)</li><li>U+Es, LFTs, INR, VBG (PICS/ICE "overdose" bundle)</li><li>If level above treatment line → start acetylcysteine</li></ul></div>`;
+  }
+  else if(t === '1-4'){
+    banner = `<div class="callout info"><div class="ico">⏱</div><div class="body"><div class="heading">Wait until 4 hours post-ingestion</div><div class="text">Levels before 4 hours cannot be plotted on the nomogram.</div></div></div>`;
+    body += `<div class="action-block"><h4>Plan</h4><ul><li>Obtain paracetamol concentration at the 4-hour mark</li><li>Send U+Es, LFTs, INR, VBG with that sample</li><li>Plot the 4-hour level on the nomogram</li><li>If above treatment line → start acetylcysteine</li></ul></div>`;
+  }
+  else if(t === '4-8'){
+    banner = `<div class="callout warn"><div class="ico">⚠</div><div class="body"><div class="heading">Take bloods now and await results</div><div class="text">Pre-emptive NAC if results delayed beyond 8 hours and &gt; 150 mg/kg ingested.</div></div></div>`;
+    body += `<div class="action-block"><h4>Bloods</h4><ul><li>U+Es, LFTs, INR, VBG, paracetamol concentration</li></ul></div>`;
+    if(over150){
+      body += `<div class="action-block"><h4>Pre-emptive treatment</h4><ul><li>Ingestion of <strong>${state.amountMgPerKg.toFixed(0)} mg/kg</strong> exceeds 150 mg/kg</li><li>If results unlikely back by 8 hr → start IV acetylcysteine</li></ul></div>`;
+      needNAC = true;
+    }
+    body += `<div class="action-block"><h4>Decision after level back</h4><ul><li>If above treatment line → commence / continue acetylcysteine</li><li>If below the line → discontinue (or do not start)</li></ul></div>`;
+  }
+  else if(t === '8-24'){
+    if(over150 || unknown){
+      banner = `<div class="callout urgent"><div class="ico">!</div><div class="body"><div class="heading">Start IV acetylcysteine without delay</div><div class="text">Do not wait for paracetamol concentration when &gt; 150 mg/kg ingested (or amount unknown).</div></div></div>`;
+      needNAC = true;
+    } else {
+      banner = `<div class="callout warn"><div class="ico">⚠</div><div class="body"><div class="heading">Take bloods and await results</div><div class="text">Ingestion below 150 mg/kg (${state.amountMgPerKg ? state.amountMgPerKg.toFixed(0)+' mg/kg' : 'unknown'}).</div></div></div>`;
+    }
+    body += `<div class="action-block"><h4>Bloods</h4><ul><li>Paracetamol concentration, U+Es, LFTs (especially ALT), INR, VBG</li></ul></div>`;
+    body += `<div class="action-block"><h4>Commence / continue acetylcysteine if</h4><ul><li>Plasma concentration above the treatment line, OR</li><li>ALT above the upper limit of normal, OR</li><li>INR &gt; 1.3 (without alternative explanation, e.g. anticoagulant)</li></ul></div>`;
+  }
+  else if(t === '>24'){
+    banner = `<div class="callout warn"><div class="ico">⚠</div><div class="body"><div class="heading">Assess for hepatic injury</div><div class="text">Jaundice or RUQ tenderness?</div></div></div>`;
+    body += `<div class="action-block"><h4>If hepatic injury present</h4><ul><li>Start IV acetylcysteine without delay</li><li>Obtain blood samples — do not wait for results</li></ul></div>`;
+    body += `<div class="action-block"><h4>Otherwise — await bloods, start NAC if any of</h4><ul><li>Paracetamol concentration detectable, OR</li><li>INR &gt; 1.3 (no alternative explanation), OR</li><li>ALT above the upper limit of normal</li></ul></div>`;
+    needNAC = true;
+  }
+
+  return `
+    <div class="card">
+      <span class="card-tag">Recommendation · Acute</span>
+      <h2>Acute overdose <em>plan</em></h2>
+      ${renderHeadSummary()}
+      ${banner}
+      ${body}
+      ${needNAC ? `<div class="action-block"><h4>SNAP acetylcysteine — your weight band highlighted</h4>${renderSnapTable(state.weight)}<p style="margin-top:12px;font-size:13px;color:var(--ink-soft)">Bag 1 (100 mg/kg) in 200 mL 5% glucose over 2 hr. Bag 2 (200 mg/kg) in 1 L 5% glucose over 10 hr. Doses capped at 110 kg.</p></div>` : ''}
+      ${renderAdminAlerts()}
+      <div class="btn-row"><button class="btn" onclick="restart()">↻ New patient</button></div>
+    </div>`;
+}
+
+function renderStaggeredRec(){
+  return `
+    <div class="card">
+      <span class="card-tag">Recommendation · Staggered</span>
+      <h2>Staggered overdose <em>plan</em></h2>
+      ${renderHeadSummary()}
+      <div class="callout urgent"><div class="ico">!</div><div class="body"><div class="heading">Start IV acetylcysteine without delay</div><div class="text">Do not wait for paracetamol concentration.</div></div></div>
+      <div class="action-block"><h4>Bloods</h4><ul><li>Obtain blood samples <strong>≥ 4 hours after the last ingestion</strong></li><li>U+Es, LFTs, INR, VBG, paracetamol concentration</li></ul></div>
+      <div class="action-block"><h4>Acetylcysteine course</h4><ul><li>Complete the <strong>full SNAP infusion</strong> regardless of paracetamol concentration</li><li>End-of-Bag-2 review using post-infusion criteria</li></ul></div>
+      <div class="action-block"><h4>SNAP dosing — your weight band highlighted</h4>${renderSnapTable(state.weight)}</div>
+      ${renderAdminAlerts()}
+      <div class="btn-row"><button class="btn" onclick="restart()">↻ New patient</button></div>
+    </div>`;
+}
+
+function renderTherapeuticRec(){
+  let banner = '', body = '', needNAC = false;
+  if(state.hep === 'yes'){
+    banner = `<div class="callout urgent"><div class="ico">!</div><div class="body"><div class="heading">Hepatic injury suspected — bloods + NAC without delay</div><div class="text">Jaundice and/or RUQ pain present. Do not wait for results.</div></div></div>`;
+    body += `<div class="action-block"><h4>Bloods</h4><ul><li>U+Es, LFTs, INR, VBG, paracetamol concentration</li></ul></div>`;
+    needNAC = true;
+  } else if(state.teMgPerKg >= 75){
+    banner = `<div class="callout warn"><div class="ico">⚠</div><div class="body"><div class="heading">Obtain bloods ≥ 4 hr after last ingestion</div><div class="text">Commence acetylcysteine if any evidence of hepatotoxicity (raised ALT, INR &gt; 1.3, detectable paracetamol).</div></div></div>`;
+    body += `<div class="action-block"><h4>Threshold reached</h4><ul><li>Ingestion of <strong>${state.teMgPerKg.toFixed(0)} mg/kg</strong> in 24 h — above 75 mg/kg threshold</li><li>Send LFTs (especially ALT), INR, U+Es, paracetamol concentration</li></ul></div>`;
+    needNAC = true;
+  } else if(state.teAmount > 4){
+    banner = `<div class="callout info"><div class="ico">✓</div><div class="body"><div class="heading">Low risk of toxicity</div><div class="text">Ingestion of ${state.teAmount} g in 24 h is above the 4 g licensed daily dose but below 75 mg/kg (${state.teMgPerKg.toFixed(0)} mg/kg).</div></div></div>`;
+    body += `<div class="action-block"><h4>Bloods — consider</h4><ul><li>Especially if any doubt or high-risk group (see sidebar)</li><li>Take samples ≥ 4 hours after last ingestion</li></ul></div>`;
+    body += `<div class="callout info"><div class="ico">i</div><div class="body"><div class="heading">High-risk group?</div><div class="text">Malnutrition, chronic alcohol excess, eating disorders, HIV, cystic fibrosis — toxicity threshold may be lower. Discuss with NPIS.</div></div></div>`;
+  } else {
+    banner = `<div class="callout good"><div class="ico">✓</div><div class="body"><div class="heading">Toxicity risk very low</div><div class="text">Ingestion below 4 g and below 75 mg/kg in 24 h.</div></div></div>`;
+    body += `<div class="action-block"><h4>Management</h4><ul><li>No specific treatment required</li><li>Routine assessment; consider observation if any clinical concern</li></ul></div>`;
+  }
+
+  return `
+    <div class="card">
+      <span class="card-tag">Recommendation · Therapeutic excess</span>
+      <h2>Therapeutic excess <em>plan</em></h2>
+      ${renderHeadSummary()}
+      ${banner}
+      ${body}
+      ${needNAC ? `<div class="action-block"><h4>SNAP dosing — your weight band highlighted</h4>${renderSnapTable(state.weight)}</div>` : ''}
+      ${renderAdminAlerts()}
+      <div class="btn-row"><button class="btn" onclick="restart()">↻ New patient</button></div>
+    </div>`;
+}
+
+function renderAdminAlerts(){
+  return `<div class="callout info"><div class="ico">i</div><div class="body"><div class="heading">Administrative</div><div class="text">Deliberate overdoses require <strong>Liaison Psychiatry</strong> assessment before discharge. Discuss with NPIS (0844 892 0111) if any uncertainty.</div></div></div>`;
+}
+
+function render(id){
+  currentId = id;
+  document.getElementById('node').innerHTML = nodes[id] ? nodes[id]() : '<div class="card"><p>Node not found.</p></div>';
+  const stepMap = { weight:1, type:2, acute:3, staggered:3, therapeutic:3, 'rec-acute':4, 'rec-staggered':4, 'rec-therapeutic':4 };
+  setStep(stepMap[id] || 1);
+  setTrail();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function submitWeight(){
+  const w = parseFloat(document.getElementById('in-wt').value);
+  if(!w || w < 40){ alert('Please enter a valid weight (≥ 40 kg).'); return; }
+  state.weight = w;
+  history_arr.push({ id:'weight', label:`${w} kg` });
+  render('type');
+}
+
+function pickType(type, label){
+  state.type = type;
+  history_arr.push({ id:'type', label });
+  render(type);
+}
+
+function submitAcute(){
+  const amt = parseFloat(document.getElementById('in-amt').value);
+  const time = document.getElementById('in-time').value;
+  if(!time){ alert('Please select the timing.'); return; }
+  state.acuteTime = time;
+  if(amt){
+    state.amountMg = amt;
+    state.amountMgPerKg = amt / Math.min(state.weight, 110);
+  }
+  history_arr.push({ id:'acute', label:`${amt?amt+' mg':'amount unknown'} · ${time} h` });
+  render('rec-acute');
+}
+
+function submitTherapeutic(){
+  const amt = parseFloat(document.getElementById('in-teamt').value);
+  const hep = document.getElementById('in-hep').value;
+  if(!hep){ alert('Please select hepatic injury status.'); return; }
+  state.hep = hep;
+  if(amt){
+    state.teAmount = amt;
+    state.teMgPerKg = (amt * 1000) / Math.min(state.weight, 110);
+  }
+  history_arr.push({ id:'therapeutic', label:`${amt} g/24h · ${hep==='yes'?'hep injury':'no hep injury'}` });
+  render('rec-therapeutic');
+}
+
+function pickRec(target, label){
+  history_arr.push({ id:currentId, label });
+  render(target);
+}
+
+function goBack(){
+  if(history_arr.length===0) return;
+  history_arr.pop();
+  const prevMap = { type:'weight', acute:'type', staggered:'type', therapeutic:'type', 'rec-acute':'acute', 'rec-staggered':'staggered', 'rec-therapeutic':'therapeutic' };
+  const prev = prevMap[currentId];
+  if(prev) render(prev);
+}
+
+function restart(){
+  Object.keys(state).forEach(k=>state[k]=null);
+  history_arr = [];
+  render('weight');
+}
+
+render('weight');
+</script>
+</body>
+</html>
