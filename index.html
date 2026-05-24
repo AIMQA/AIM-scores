@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinical Decision Support — Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS — shared across hub + all 4 tools
+   ============================================================ */
+:root {
+  /* Base palette */
+  --paper:        #F7F4EE;
+  --paper-deep:   #EFEAE0;
+  --cream:        #FBF8F2;
+  --ink:          #0B1F33;
+  --ink-soft:     #294159;
+  --ink-mute:     #5A6E80;
+  --rule:         #D9D2C3;
+  --rule-soft:    #E5E0D2;
+  --white:        #FFFFFF;
+
+  /* Tool accents */
+  --dka:          #C84A1E;   /* warm vermilion */
+  --dka-soft:     #FAE6DC;
+  --pe:           #1F5F8F;   /* clinical blue */
+  --pe-soft:      #DDE9F2;
+  --para:         #2C6E49;   /* forest green */
+  --para-soft:    #DEE9E0;
+  --htn:          #8A1538;   /* muted crimson */
+  --htn-soft:     #F1DAE0;
+
+  /* Semantic */
+  --red:          #A8201A;
+  --red-soft:     #F6E3E1;
+  --amber:        #9A6A00;
+  --amber-soft:   #FAEFD1;
+  --green:        #155D3A;
+  --green-soft:   #DEEEDF;
+  --info:         #0A4A6E;
+  --info-soft:    #DCEAF2;
+
+  /* Type */
+  --serif:        'Fraunces', 'Libre Baskerville', Georgia, serif;
+  --sans:         'Inter Tight', system-ui, -apple-system, sans-serif;
+  --mono:         'JetBrains Mono', ui-monospace, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 700px at 85% -15%, rgba(31,95,143,0.05), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(200,74,30,0.04), transparent 60%),
+    var(--paper);
+  min-height: 100vh;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss01', 'cv11';
+}
+
+/* ============================================================
+   MASTHEAD
+   ============================================================ */
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  background: var(--white);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.masthead-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 22px 32px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.brand-mark {
+  width: 46px; height: 46px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 8px;
+  display: grid; place-items: center;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 22px;
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+.brand-text { display: flex; flex-direction: column; line-height: 1.1; gap: 2px; }
+.brand-text .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 500;
+}
+.brand-text .brand-title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 19px;
+  color: var(--ink);
+}
+
+.masthead-meta {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 32px 48px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 64px;
+  align-items: end;
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(48px, 6.5vw, 88px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+.hero-aside {
+  border-left: 1px solid var(--rule);
+  padding: 8px 0 8px 24px;
+}
+.hero-aside .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 10px;
+}
+.hero-aside p {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* Section ribbon */
+.ribbon {
+  max-width: 1280px;
+  margin: 32px auto 0;
+  padding: 0 32px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 18px;
+}
+.ribbon-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: 0.1em;
+}
+.ribbon-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--ink);
+}
+.ribbon-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.1em;
+}
+
+/* ============================================================
+   CARD GRID
+   ============================================================ */
+.grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 36px 32px 80px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 32px 32px 28px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  min-height: 280px;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--accent);
+  transform-origin: left center;
+  transition: transform 0.3s ease;
+}
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px 200px at 100% 0%, var(--accent-soft), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px -16px rgba(11,31,51,0.18);
+  border-color: var(--accent);
+}
+.card:hover::after { opacity: 0.7; }
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+}
+.card-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  font-weight: 500;
+}
+.card-arrow {
+  width: 36px; height: 36px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 16px;
+  color: var(--ink-soft);
+  transition: all 0.25s ease;
+  background: var(--cream);
+}
+.card:hover .card-arrow {
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+  transform: rotate(-45deg);
+}
+
+.card-title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  position: relative;
+}
+.card-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+.card-desc {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  position: relative;
+  flex: 1;
+}
+.card-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px dashed var(--rule);
+  position: relative;
+}
+.tag {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  background: var(--cream);
+  color: var(--ink-soft);
+  border-radius: 3px;
+  border: 1px solid var(--rule-soft);
+}
+.tag.accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent-soft);
+}
+
+/* Per-card accents */
+.card.dka  { --accent: var(--dka);  --accent-soft: var(--dka-soft); }
+.card.pe   { --accent: var(--pe);   --accent-soft: var(--pe-soft); }
+.card.para { --accent: var(--para); --accent-soft: var(--para-soft); }
+.card.htn  { --accent: var(--htn);  --accent-soft: var(--htn-soft); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  border-top: 1px solid var(--rule);
+  background: var(--white);
+}
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.footer-inner p {
+  font-size: 13px;
+  color: var(--ink-mute);
+  line-height: 1.6;
+}
+.footer-meta {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 880px) {
+  .hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 24px 32px; }
+  .hero-aside { border-left: none; border-top: 1px solid var(--rule); padding: 24px 0 0; }
+  .grid { grid-template-columns: 1fr; padding: 24px 24px 48px; }
+  .ribbon { padding: 0 24px 18px; margin-top: 24px; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-meta { text-align: left; }
+  .masthead-meta { display: none; }
+}
+
+/* Entry animation */
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card { animation: slide-up 0.5s ease backwards; }
+.card.dka  { animation-delay: 0.05s; }
+.card.pe   { animation-delay: 0.15s; }
+.card.para { animation-delay: 0.25s; }
+.card.htn  { animation-delay: 0.35s; }
+
+.hero h1 { animation: slide-up 0.6s ease backwards; }
+.hero-aside { animation: slide-up 0.6s ease 0.15s backwards; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="brand-mark">C</div>
+    <div class="brand-text">
+      <span class="eyebrow">Clinical Decision Support</span>
+      <span class="brand-title">Acute care pathways</span>
+    </div>
+    <div class="masthead-meta">v1.0 · Hub</div>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Four guideline-driven pathways, <em>one place to start.</em></h1>
+  <aside class="hero-aside">
+    <div class="label">About this hub</div>
+    <p>A small library of interactive decision-support tools built from published guidelines. Each opens as a separate page — pick a pathway below to begin.</p>
+  </aside>
+</section>
+
+<div class="ribbon">
+  <span class="ribbon-num">01 ·</span>
+  <span class="ribbon-title">Pathways</span>
+  <span class="ribbon-count">04 TOOLS</span>
+</div>
+
+<main class="grid">
+
+  <a class="card dka" href="dka.html" target="_blank" rel="noopener">
+    <div class="card-head">
+      <span class="card-num">PATHWAY · 01</span>
+      <span class="card-arrow">→</span>
+    </div>
+    <h2 class="card-title">Diabetic <em>ketoacidosis</em></h2>
+    <p class="card-desc">Step-through management of classic DKA, euglycaemic DKA, and DKA with end-stage renal disease — with phased fluid, insulin and monitoring guidance.</p>
+    <div class="card-meta">
+      <span class="tag accent">JBDS-IP</span>
+      <span class="tag">Adult</span>
+      <span class="tag">3 phenotypes</span>
+    </div>
+  </a>
+
+  <a class="card pe" href="pe-pregnancy.html" target="_blank" rel="noopener">
+    <div class="card-head">
+      <span class="card-num">PATHWAY · 02</span>
+      <span class="card-arrow">→</span>
+    </div>
+    <h2 class="card-title">Suspected PE in <em>pregnancy</em></h2>
+    <p class="card-desc">Triage, DVT screening, workup and imaging decisions for suspected pulmonary embolism in pregnancy and the postpartum period.</p>
+    <div class="card-meta">
+      <span class="tag accent">RCOG / SDEC</span>
+      <span class="tag">Pregnancy</span>
+      <span class="tag">5 steps</span>
+    </div>
+  </a>
+
+  <a class="card para" href="paracetamol.html" target="_blank" rel="noopener">
+    <div class="card-head">
+      <span class="card-num">PATHWAY · 03</span>
+      <span class="card-arrow">→</span>
+    </div>
+    <h2 class="card-title">Paracetamol <em>overdose</em></h2>
+    <p class="card-desc">Weight-banded SNAP acetylcysteine dosing for acute, staggered and therapeutic-excess ingestions, with post-infusion review criteria.</p>
+    <div class="card-meta">
+      <span class="tag accent">SNAP regimen</span>
+      <span class="tag">≥ 40 kg</span>
+      <span class="tag">Toxbase-aligned</span>
+    </div>
+  </a>
+
+  <a class="card htn" href="hypertensive-crisis.html" target="_blank" rel="noopener">
+    <div class="card-head">
+      <span class="card-num">PATHWAY · 04</span>
+      <span class="card-arrow">→</span>
+    </div>
+    <h2 class="card-title">Hypertensive <em>crisis</em></h2>
+    <p class="card-desc">BIHS 2022 pathway: distinguishes acute severe hypertension, malignant hypertension, and ten distinct hypertensive emergencies.</p>
+    <div class="card-meta">
+      <span class="tag accent">BIHS 2022</span>
+      <span class="tag">≥ 180/120</span>
+      <span class="tag">10 emergencies</span>
+    </div>
+  </a>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p><strong>Clinical decision support — not a substitute for clinical judgement.</strong> All pathways here are derived from publicly available guidelines. Always cross-check with local trust policy, current Toxbase / NPIS advice, and seek senior input in any case of clinical uncertainty.</p>
+    <div class="footer-meta">
+      © Clinical Hub<br>
+      Built for SharePoint / NHS browsers
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
